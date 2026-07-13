@@ -1302,12 +1302,13 @@ export default function LazaRental() {
     const [forgotSent, setForgotSent]    = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
       if (!validateAuth()) return;
       setIsSubmitting(true);
-      await sleep(800); // replace with real Supabase call
-      setIsSubmitting(false);
-      setScreen("main");
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setScreen("main");
+      }, 800);
     };
 
     const handleForgot = () => {
