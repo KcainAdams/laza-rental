@@ -722,7 +722,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
 /* LOGIN */
 .login{min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;}
-.login-photo{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=900&q=85') center/cover no-repeat;}
+.login-photo{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85') center/cover no-repeat;}
 .login-overlay{position:absolute;inset:0;background:linear-gradient(
   to bottom,
   rgba(44,24,16,0.05) 0%,
@@ -778,6 +778,81 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .login-trust-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.2);}
 @keyframes fieldShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .field-shake{animation:fieldShake 0.3s ease;}
+
+/* ── PRODUCTION UI SYSTEM ──────────────────────────── */
+
+/* Responsive breakpoints */
+@media(max-width:380px){
+  .login-headline{font-size:30px;}
+  .prop-card{margin:0 12px 16px;}
+  .section-label{padding:14px 12px 10px;}
+  .search-hero{padding:16px 12px 0;}
+  .post-form{padding:16px;}
+  .profile-section{padding:14px 12px 0;}
+}
+@media(min-width:431px){
+  .app{border-radius:24px;margin:20px auto;box-shadow:0 8px 40px rgba(44,24,16,0.15);min-height:calc(100vh - 40px);}
+}
+
+/* Smooth page transitions */
+.screen{animation:fadeIn 0.25s ease both;}
+
+/* Better touch targets — min 44px */
+.nav-btn{min-height:44px;}
+.filter-pill{min-height:40px;}
+.prop-heart{min-width:44px;min-height:44px;}
+
+/* Loading pulse for images */
+.prop-img img{transition:opacity 0.3s ease;}
+.prop-img img[src=""]{opacity:0;}
+
+/* Error state for inputs */
+.f-input.err,.f-textarea.err{border-color:var(--error);background:#FFF8F8;}
+
+/* Success state */
+.f-input.ok{border-color:var(--sage);}
+
+/* Disabled state */
+button:disabled{opacity:0.55;cursor:not-allowed;}
+
+/* Better scrollbar */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+/* Card hover lift */
+.prop-card:hover{transform:translateY(-2px);box-shadow:0 2px 0 var(--border),0 16px 40px rgba(44,24,16,0.14);}
+
+/* Smooth transitions everywhere */
+.ps-item,.filter-pill,.role-chip,.login-tab,.nav-btn,.prop-heart,.btn,.modal-close{transition:all 0.18s cubic-bezier(.22,1,.36,1);}
+
+/* Full-screen empty state */
+.full-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;padding:40px 24px;text-align:center;}
+.full-empty-icon{font-size:56px;margin-bottom:16px;animation:bounceIn 0.5s cubic-bezier(.22,1,.36,1);}
+@keyframes bounceIn{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
+.full-empty-title{font-family:var(--ff-serif);font-size:24px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.full-empty-sub{font-size:14px;color:var(--ink3);line-height:1.7;max-width:280px;margin:0 auto 20px;}
+.full-empty-btn{padding:13px 28px;background:var(--rust);color:white;border:none;border-radius:14px;font-family:var(--ff-sans);font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(200,98,47,0.3);}
+
+/* Inline loading spinner */
+.spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block;}
+.spinner.dark{border-color:rgba(44,24,16,0.15);border-top-color:var(--rust);}
+
+/* Network error banner */
+.error-banner{background:#FEF0EC;border:1px solid #F5C5B0;border-radius:12px;padding:12px 16px;margin:12px 20px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--rust-dk);}
+
+/* Success banner */
+.success-banner{background:#F0F7F1;border:1px solid #C8E6C9;border-radius:12px;padding:12px 16px;margin:12px 20px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--sage);}
+
+/* Image error fallback */
+.img-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--cream);font-size:36px;color:var(--border);}
+
+/* Keyboard navigation outline */
+*:focus-visible{outline:3px solid var(--rust);outline-offset:3px;border-radius:4px;}
+
+/* Skip to main content link (accessibility) */
+.skip-link{position:fixed;top:-100%;left:16px;z-index:9999;padding:8px 16px;background:var(--rust);color:white;border-radius:0 0 8px 8px;font-size:13px;font-weight:700;text-decoration:none;}
+.skip-link:focus{top:0;}
 
 /* TOPBAR */
 .topbar{background:var(--white);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);box-shadow:0 1px 8px rgba(44,24,16,0.06);}
@@ -1190,8 +1265,41 @@ export default function LazaRental() {
   const [reviewModal, setReviewModal] = useState(false);
   const [newR, setNewR]               = useState({text:"",rating:5,property:""});
 
+  // ── Auth screen local state (top-level to obey Rules of Hooks) ──
+  const [showPass, setShowPass]         = useState(false);
+  const [showConfirm, setShowConfirm]   = useState(false);
+  const [forgotSent, setForgotSent]     = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = () => {
+    if (!validateAuth()) return;
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setScreen("main");
+    }, 600);
+  };
+
+  const handleForgot = () => {
+    if (!auth.email) { showToast("Enter your email first", "error"); return; }
+    setForgotSent(true);
+    showToast("📧 Reset link sent to " + auth.email, "success");
+  };
+
   // User
   const user = { name: role==="landlord"?"James Osei":"Alex Owusu", email:"alex@email.com", phone:"+1 555 0192" };
+
+  // Set browser tab title and favicon dynamically
+  useEffect(() => {
+    document.title = "LazaRental — Smart Rental Guide";
+    // Inject favicon as SVG data URI — house icon in rust red
+    const favicon = document.querySelector("link[rel*='icon']") as HTMLLinkElement
+      || document.createElement("link") as HTMLLinkElement;
+    favicon.type = "image/svg+xml";
+    favicon.rel  = "icon";
+    favicon.href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23C8622F'/><path d='M6 15L16 7l10 8v9a1 1 0 01-1 1h-5v-6h-8v6H7a1 1 0 01-1-1v-9z' fill='white'/></svg>`;
+    document.head.appendChild(favicon);
+  }, []);
 
   const unreadCount = notifications.filter(n=>!n.read).length;
 
@@ -1296,28 +1404,7 @@ export default function LazaRental() {
   );
 
   // ── AUTH screen ──
-  if (screen==="auth") {
-    const [showPass, setShowPass]        = useState(false);
-    const [showConfirm, setShowConfirm]  = useState(false);
-    const [forgotSent, setForgotSent]    = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const handleSubmit = () => {
-      if (!validateAuth()) return;
-      setIsSubmitting(true);
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setScreen("main");
-      }, 800);
-    };
-
-    const handleForgot = () => {
-      if (!auth.email) { showToast("Enter your email first", "error"); return; }
-      setForgotSent(true);
-      showToast("📧 Reset link sent to " + auth.email, "success");
-    };
-
-    return (
+  if (screen==="auth") return (
       <div className="app"><style>{styles}</style>
         {toast && <div className={`toast ${toast.type}`} role="status">{toast.msg}</div>}
         <div className="login" role="main">
@@ -1335,7 +1422,7 @@ export default function LazaRental() {
             </div>
 
             {/* Hero copy */}
-            <div className="login-badge"><div className="login-badge-dot"/><span className="login-badge-text">{SLOGAN}</span></div>
+            <div className="login-badge"><span className="login-badge-text">{SLOGAN}</span></div>
             <div className="login-headline">Find a home your <em>family</em> deserves.</div>
             <div className="login-sub">Verified landlords · Clear bylaws · Fair deposits.<br/>No more nasty surprises.</div>
 
@@ -1477,7 +1564,6 @@ export default function LazaRental() {
         </div>
       </div>
     );
-  }
 
   // ── MAIN APP ──
   const avgRating = (reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1);
@@ -1485,6 +1571,7 @@ export default function LazaRental() {
 
   return (
     <div className="app"><style>{styles}</style>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       {toast && <div className={`toast ${toast.type}`} role="status" aria-live="polite">{toast.msg}</div>}
 
       {/* NOTIFICATIONS PANEL */}
@@ -1533,7 +1620,7 @@ export default function LazaRental() {
 
       {/* ════ HOME ════ */}
       {tab==="home" && (
-        <main className="screen" aria-label="Explore listings">
+        <main className="screen" id="main-content" aria-label="Explore listings">
           <div className="search-hero">
             <div className="search-greeting" aria-label={`Greeting for ${user.name.split(" ")[0]}`}>Good day, {user.name.split(" ")[0]} 👋</div>
             <h1 className="search-heading">Find a home<br/>you'll <span>love</span>.</h1>
@@ -1603,11 +1690,11 @@ export default function LazaRental() {
           {loading ? (
             [0,1,2].map(i=><SkeletonCard key={i}/>)
           ) : filtered.length===0 ? (
-            <div className="no-results" role="status">
-              <div className="no-results-icon">🔍</div>
-              <div>No homes match your search.</div>
-              <button onClick={()=>{setBedFilter("Any");setMinPrice("");setMaxPrice("");setSearchQ("");}}
-                style={{marginTop:12,padding:"8px 20px",background:"var(--rust)",color:"white",border:"none",borderRadius:12,fontFamily:"var(--ff-sans)",fontWeight:600,cursor:"pointer",fontSize:13}}>
+            <div className="full-empty" role="status" aria-live="polite">
+              <div className="full-empty-icon">🏠</div>
+              <div className="full-empty-title">No homes found</div>
+              <div className="full-empty-sub">Try adjusting your search or filters — there are great homes nearby.</div>
+              <button className="full-empty-btn" onClick={()=>{setBedFilter("Any");setMinPrice("");setMaxPrice("");setSearchQ("");}}>
                 Clear all filters
               </button>
             </div>
@@ -1616,7 +1703,7 @@ export default function LazaRental() {
               tabIndex={0} style={{animationDelay:`${idx*70}ms`}}
               onClick={()=>setSelected(h)} onKeyDown={e=>e.key==="Enter"&&setSelected(h)}>
               <div className="prop-img">
-                <img src={h.img} alt={`${h.title} exterior`} loading={idx===0?"eager":"lazy"}/>
+                <img src={h.img} alt={`${h.title} exterior`} loading={idx===0?"eager":"lazy"} onError={e=>{(e.target as HTMLImageElement).src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=75";}}/>
                 {h.badge && <div className={`prop-badge ${h.badge==="Top Rated"?"sage":h.badge==="Featured"?"rust":""}`}>{h.badge}</div>}
                 {!h.available && <div className="prop-badge unavail">Unavailable</div>}
                 <button className="prop-heart" onClick={e=>{e.stopPropagation();toggleFav(h.id);}} aria-label={favorites.includes(h.id)?`Remove ${h.title} from saved`:`Save ${h.title}`}>
